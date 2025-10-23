@@ -12,8 +12,8 @@ const Card = ({movie}) => {
             />
         </div>
         <div>
-            <h2 className='text-sm text-white font-semibold text-center'>{movie.title}</h2>
-            <p className='text-sm text-gray-300 text-center'>{movie.release_date}</p>
+            <h2 className='text-sm text-white font-semibold text-center'>{movie.title || movie.name}</h2>
+            <p className='text-sm text-gray-300 text-center'>{movie.release_date || movie.first_air_date}</p>
         </div>
     </div>
   )
