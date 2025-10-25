@@ -9,6 +9,7 @@ import HeroSkeleton from "../components/HeroSkeleton";
 import MovieSkeleton from "../components/MovieSkeleton";
 import ErrorDisplay from "../components/ErrorDisplay";
 import MoviesError from "../components/MoviesError";
+import Modal from "../components/Modal";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
@@ -22,10 +23,12 @@ const Home = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     getLatest();
     handleCategoryChange();
+    setSelectedMovie(null);
   }, []);
 
   useEffect(() => {
@@ -142,6 +145,10 @@ const Home = () => {
     setCurrentLatest(latest[idx]);
   };
 
+  const handleSelectMovie = (movie) => {
+    setSelectedMovie(movie);
+  };
+
   return (
     <div className="min-h-screen py-6">
       <Navbar
@@ -210,13 +217,27 @@ const Home = () => {
       ) : (
         <div className="flex flex-wrap justify-center gap-4 max-w-7xl mx-auto px-4 mt-15">
           {movies?.length > 0 ? (
-            movies.map((movie, key) => <Card key={key} movie={movie} />)
+            movies.map((movie, key) => (
+              <Card
+                key={key}
+                movie={movie}
+                onClick={() => handleSelectMovie(movie)}
+              />
+            ))
           ) : (
             <div className="text-lg text-gray-300 text-center w-full">
               No results found
             </div>
           )}
         </div>
+      )}
+
+      {selectedMovie && (
+        <Modal
+          selectedMovie={selectedMovie}
+          setSelectedMovie={setSelectedMovie}
+          getImageUrl={getImageUrl}
+        />
       )}
 
       <Pagination
